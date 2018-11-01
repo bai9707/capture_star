@@ -1,23 +1,20 @@
 cc.Class({
     extends: cc.Component,
     properties:{
-      Audio:{
+      Role:{
         default:null,
-        type:cc.AudioClip
+        type:cc.Node
       },
-      Height:0,
-      Duration:0,
       Speed:0,
-      Accel:0
+      Accel:0,
+      direction_l:"",
+      direction_r:"",
     },
     onLoad(){
-      this.Action=this.set();
-      this.node.runAction(this.Action);
       this.accLeft=false;
       this.accRight=false;
       this.xSpeed=0;
-      cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN,this.onDown,this);
-      cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP,this.onUp,this);
+      this.Role.living=this;
     },
     start(){},
     update(dt){
@@ -30,38 +27,38 @@ cc.Class({
         this.xSpeed=this.maxMoveSpeed*this.xSpeed/Math.abs(this.xSpeed);
       }
       this.node.x+=this.xSpeed*dt;
+      this.node.x=this.node.x>480?this.node.x=-480:
+      this.node.x<-480?this.node.x=480:this.node.x;
+    },
+    onMonitor(){
+      cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN,this.onDown,this);
+      cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP,this.onUp,this);
     },
     onDestroy(){
       cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN,this.onDown,this);
       cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP,this.onUp,this);
+      this.accLeft=false;
+      this.accRight=false;
+      this.xSpeed=0;
     },
     onDown(e){
       switch(e.keyCode){
-        case cc.macro.KEY.a:
+        case cc.macro.KEY[this.direction_l]:
           this.accLeft=true;
         break;
-        case cc.macro.KEY.d:
+        case cc.macro.KEY[this.direction_r]:
           this.accRight=true;
         break;
       }
     },
     onUp(e){
       switch(e.keyCode){
-        case cc.macro.KEY.a:
+        case cc.macro.KEY[this.direction_l]:
           this.accLeft=false;
         break;
-        case cc.macro.KEY.d:
+        case cc.macro.KEY[this.direction_r]:
           this.accRight=false;
         break;
       }
     },
-    set(){
-      var Up=cc.moveBy(this.Duration,cc.v2(0,this.Height)).easing(cc.easeCubicActionOut());
-      var Down=cc.moveBy(this.Duration,cc.v2(0,-this.Height)).easing(cc.easeCubicActionIn());
-      var callback=cc.callFunc(this.RoleSound,this);
-      return cc.repeatForever(cc.sequence(Up,Down,callback));
-    },
-    RoleSound(){
-      cc.audioEngine.playEffect(this.Audio,false);
-    }
 });

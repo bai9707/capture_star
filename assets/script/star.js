@@ -10,9 +10,8 @@ cc.Class({
         this.Picked();
         return;
       }
-      return;
       var Opacity=1-this.game.Timer/this.game.StarDuration;
-      var MinOpacity=50;
+      var MinOpacity=40;
       this.node.opacity=MinOpacity+Math.floor(Opacity*(255-MinOpacity));
     },
     GetRole:function(){

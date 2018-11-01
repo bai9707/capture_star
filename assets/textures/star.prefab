@@ -39,7 +39,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 60,
+      "width": 65,
       "height": 65
     },
     "_anchorPoint": {
@@ -110,7 +110,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "Radius": 60,
+    "Radius": 65,
     "_id": ""
   },
   {
@@ -119,7 +119,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "39614948-7440-4e51-8fc9-8e8c0d02b2ee"
     },
     "fileId": "e5f1TJup5H8aI1mRVPiWDP",
     "sync": false
